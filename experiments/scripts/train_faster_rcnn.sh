@@ -18,8 +18,8 @@ case ${DATASET} in
   pascal_voc)
     TRAIN_IMDB="voc_2007_trainval"
     TEST_IMDB="voc_2007_test"
-    STEPSIZE=50000
-    ITERS=70000
+    STEPSIZE=200
+    ITERS=400
     ANCHORS="[8,16,32]"
     RATIOS="[0.5,1,2]"
     ;;
@@ -60,7 +60,7 @@ set -x
 if [ ! -f ${NET_FINAL}.index ]; then
     if [[ ! -z  ${EXTRA_ARGS_SLUG}  ]]; then
         CUDA_VISIBLE_DEVICES=${GPU_ID} time python ./tools/trainval_net.py \
-            --weight data/imagenet_weights/${NET}.ckpt \
+            --weight data/pretrained/${NET}.ckpt \
             --imdb ${TRAIN_IMDB} \
             --imdbval ${TEST_IMDB} \
             --iters ${ITERS} \
@@ -70,7 +70,7 @@ if [ ! -f ${NET_FINAL}.index ]; then
             --set ANCHOR_SCALES ${ANCHORS} ANCHOR_RATIOS ${RATIOS} TRAIN.STEPSIZE ${STEPSIZE} ${EXTRA_ARGS}
     else
         CUDA_VISIBLE_DEVICES=${GPU_ID} time python ./tools/trainval_net.py \
-            --weight data/imagenet_weights/${NET}.ckpt \
+            --weight data/pretrained/${NET}.ckpt \
             --imdb ${TRAIN_IMDB} \
             --imdbval ${TEST_IMDB} \
             --iters ${ITERS} \
